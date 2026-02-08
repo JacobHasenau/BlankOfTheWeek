@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Domain.Models;
 
-namespace Domain.Models;
-
-public class Emotion: IBlankOfTheDay
+public class Emotion : IBlankOfTheDay
 {
     private readonly IEmotionState _state;
 
@@ -15,9 +9,9 @@ public class Emotion: IBlankOfTheDay
         _state = state;
     }
 
-    public Emotion(string name, string? description) 
+    public Emotion(string name, string? description)
     {
-       _state = new EmotionState { Name = name, Description = description };
+        _state = new EmotionState { Name = name, Description = description };
     }
 
     public long Id => _state.Id;

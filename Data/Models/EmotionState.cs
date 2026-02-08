@@ -6,7 +6,7 @@ namespace Data.Models;
 public class EmotionState : IEmotionState
 {
     public EmotionState() { }
-    
+
     [SetsRequiredMembers] //Hm, don't know if I like this just to have requried fields... 
     public EmotionState(Emotion emotion)
     {

@@ -1,5 +1,4 @@
 ﻿using Domain.Models;
-using System.Xml.Linq;
 
 namespace Domain.Services;
 
@@ -16,12 +15,12 @@ public class EmotionService(IEmotionRepoistory repo, IDefiner definer) : IEmotio
         }
 
         var existingEmotion = await _repository.GetByName(name);
-        if(existingEmotion is not null)
+        if (existingEmotion is not null)
         {
             return EmotionAdditionResult.AlreadyExists;
         }
 
-        if (description is null) 
+        if (description is null)
         {
             var definition = await _definer.DefineWord(name);
             description = definition?.Meanings?.FirstOrDefault()?.Definition;
@@ -37,10 +36,10 @@ public class EmotionService(IEmotionRepoistory repo, IDefiner definer) : IEmotio
     {
         var emotions = await _repository.GetAll();
         var emotion = emotions.OrderBy(e => Guid.NewGuid()).FirstOrDefault();
-        
-        if (emotion?.Description is null)
+
+        if (emotion is not null && emotion?.Description is null)
         {
-            var definition = await _definer.DefineWord(emotion.Name);
+            var definition = await _definer.DefineWord(emotion!.Name);
             if (definition is not null)
             {
                 emotion.NewDescriptionFound(definition);

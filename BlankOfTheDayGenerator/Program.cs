@@ -3,7 +3,6 @@ using Data.Models;
 using Data.Services;
 using DictionaryApiClient;
 using Domain.Services;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
