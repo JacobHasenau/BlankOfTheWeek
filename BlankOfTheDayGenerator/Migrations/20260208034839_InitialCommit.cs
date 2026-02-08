@@ -19,7 +19,7 @@ namespace BlankOfTheDayGenerator.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
-                    Strangness = table.Column<float>(type: "REAL", nullable: false),
+                    Strangeness = table.Column<float>(type: "REAL", nullable: false),
                     LastReturned = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>

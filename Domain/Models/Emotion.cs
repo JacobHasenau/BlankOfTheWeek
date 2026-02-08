@@ -23,7 +23,7 @@ public class Emotion: IBlankOfTheDay
     public long Id => _state.Id;
     public string Name => _state.Name;
     public string? Description => _state.Description;
-    public float Strangness => _state.Strangness;
+    public float Strangeness => _state.Strangeness;
     public DateTime? LastReturned => _state.LastReturned;
 
     public void EmotionFetched()
@@ -36,13 +36,13 @@ public class Emotion: IBlankOfTheDay
         public long Id { get; set; }
         public required string Name { get; set; }
         public string? Description { get; set; }
-        public float Strangness { get; set; }
+        public float Strangeness { get; set; }
         public DateTime? LastReturned { get; set; }
 
-        public void DescriptionFound(string description, float strangness)
+        public void DescriptionFound(string description, float strangeness)
         {
             Description = description;
-            Strangness = strangness;
+            Strangeness = strangeness;
         }
 
         public void StateReturned(DateTime timeReturned)

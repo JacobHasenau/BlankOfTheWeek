@@ -4,6 +4,6 @@ public interface IBlankOfTheDay
 {
     long Id { get; }
     string Name { get; }
-    float Strangness { get; }
+    float Strangeness { get; }
     DateTime? LastReturned { get; }
 }

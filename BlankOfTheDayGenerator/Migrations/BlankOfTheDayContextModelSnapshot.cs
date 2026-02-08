@@ -33,7 +33,7 @@ namespace BlankOfTheDayGenerator.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<float>("Strangness")
+                    b.Property<float>("Strangeness")
                         .HasColumnType("REAL");
 
                     b.HasKey("Id");
