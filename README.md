@@ -1,0 +1,2 @@
+This project is a learning project to get a grasp of front end development, specifically in blazor.
+Additionally, it is to solve a particular problem: needing sudo randomness from generators instead of true randomness. Emotion generators I've found all feel like they keep giving common emotions - happy, sad, mad. At the same time, other generators like recipe generators end up giving recipes that are just incredibly out there. I want to make a generator that takes into account how different you want something to be from the “norm” before giving you an answer.
