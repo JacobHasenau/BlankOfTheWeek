@@ -1,4 +1,8 @@
 using BlankOfTheDayGenerator.Components;
+using Data.Models;
+using Data.Services;
+using Domain.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddDbContext<BlankOfTheDayContext>();
+builder.Services.AddScoped<IEmotionRepoistory, EmotionRepository>();
+builder.Services.AddScoped<IEmotionService, EmotionService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

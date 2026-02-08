@@ -1,0 +1,39 @@
+﻿@page "/emotion"
+@using Domain.Models
+@using Domain.Services
+@rendermode InteractiveServer
+@inject IEmotionService _emotionService
+
+<PageTitle>Emotion</PageTitle>
+
+<h1>Emotion</h1>
+
+<p role="status">Current emotion: @(_currentEmotion?.Name ?? "Embarssed"). Meaing: @(_currentEmotion?.Description ?? "What a developer feels when their code isn't working"). </p>
+
+<input @bind="_newEmotionName" />
+<button class="btn btn-primary" @onclick="AddEmotion">Add Emotion</button>
+<button class="btn btn-primary" @onclick="GenerateRandomEmotion"> Get New Emotion </button>
+
+@code {
+    private Emotion? _currentEmotion;
+    private string _newEmotionName = string.Empty;
+
+    private async Task AddEmotion()
+    {
+        await _emotionService.AddEmotion(_newEmotionName);
+    }
+
+    private async Task GenerateRandomEmotion()
+    {
+        _currentEmotion = await _emotionService.GetRandomEmotion();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            await GenerateRandomEmotion();
+        }
+    }
+}

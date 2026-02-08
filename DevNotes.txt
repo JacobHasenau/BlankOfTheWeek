@@ -1,0 +1,43 @@
+# Dev Notes
+### Why?
+Often when I attempt to keep track of a project, I lose context for my changes and where I was at last. Also, as this project is a way for me to learn new technologies and test certain ideas out, my hope is that this document can work as notes for my frustrations, excitements, and general progress. 
+Finally, if I *do* end up creating something fun and interesting, I hope these notes can guide the next dev who wants to make changes to understand why I made what choices I did.
+
+## Project Goal
+I have very limited front end experience, and would really like to gain more. Ideally using blazor will allow me to both sharpen my c# skills while also getting to train front end ones. Worst case, it will prove to me why javascript is what my company/friends use for front end development.
+
+## Trello
+https://trello.com/b/698814e5aeb3272db206ce0b
+
+## Notes
+### 2026-02-07
+- Spent a lonnnnggg time trying to figure out razor PageModels.
+	- Was unable to get them to work, so I pivoted to pure components.
+	- I think it needed me to embrace MVC, or I'm not actually in an MVC project?
+		- Also, the goal of this project wasn't to follow an MVC format, but with how many resources are saying to use MVC with blazor, it might be worth the detour to research it more and try and use it here.
+	- Further research is showing me that razor pages only work with razor.
+		- I had believed blazor was an "upgrade" onto razor, but they are different.
+		- https://www.telerik.com/faqs/blazor/razor-vs-blazor--what-is-the-key-difference thought me the differences
+		- blazor is a framework
+		- razor is a markup language only
+- Spent a long time making a generic repository for adding/removing "entries"
+	- This started to feel like an anti-pattern, and lo and behold, the internet [agrees](https://www.reddit.com/r/csharp/comments/1l5of90/generic_vs_specific_repositories/) 
+	- Still, ideally I want to expand this project to let users "create" their own _oftheday generators. I may need to revisit eventually how to do this.
+- Spent a medium amount of time figuring out how code-first in ef worked
+	- Also, sqlite is *very* cute, and can run so easily! Unless I had already downloaded a server its pretty cool that a database can run out of the box.
+		- Less cute is its lack of concurrent writes, lack of safty for across the wire interactions, and no security.
+		- Still, for a local project like this, it works fine!
+- Spent a small amount of time fixing typos
+	- Discriptions not a real word, turns out
+	- Of course I found that out after already making migration scripts, so I had to rip everything out...
+- Where I left off
+	- Next, I want to hook up the add emotion button to also call out to the https://dictionaryapi.dev/ (or possibly have the Emotion itself do so when no description is provided) so it can actually fill in the description.
+	- Also, want to figure out how to create custom nav-menu options, and work on creating a custom emotion option.
+	- I desire to make my random generator exhaust all emotions in the database before restarting. I need to brainstorm best ways to do this
+		- I have a "LastFetchedDate" on the emotions table, but perhaps that's too specific. Also, missing a user specific concept - every generation would impact all users.
+		- Maybe create a "user" table (want to avoid using a login for the website, but maybe ip based? still might be too intrusive...) that maintains what emotions it has fetched. When all emotions have been fetched by the user, we clear out that table and restart?
+	- Also want to figure out how to best calculate "stragness" (also, rename to strangeness.) And utilize that for a weighted random generation tech.
+		- Basically, attempt to provide the user with a desired strangeness score, weighting less used words higher for higher scores, and vise versa.
+	- Finally, actually create a ticketing system to capture ideas and do work tasks. A todo list is good, but tracking time spent/how long I think tasks will take will be good practice for figuring out how to estimate front end work.
+		- Use jira?
+		- Trello?
