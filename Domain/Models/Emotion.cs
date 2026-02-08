@@ -26,6 +26,15 @@ public class Emotion: IBlankOfTheDay
     public float Strangeness => _state.Strangeness;
     public DateTime? LastReturned => _state.LastReturned;
 
+    public void NewDescriptionFound(DefinedWord definition)
+    {
+        var newDescription = definition?.Meanings?.FirstOrDefault()?.Definition;
+        if (newDescription is not null)
+        {
+            _state.DescriptionFound(newDescription, 0);
+        }
+    }
+
     public void EmotionFetched()
     {
         _state.StateReturned(DateTime.UtcNow);

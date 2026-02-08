@@ -41,3 +41,15 @@ https://trello.com/b/698814e5aeb3272db206ce0b
 	- Finally, actually create a ticketing system to capture ideas and do work tasks. A todo list is good, but tracking time spent/how long I think tasks will take will be good practice for figuring out how to estimate front end work.
 		- Use jira?
 		- Trello?
+### 2026-02-08
+- Today proved the use of rapid prototyping and getting to the mrp as fast as possible.
+	- Hitting the freeapi and trying to consume the definition proved several holes in my understanding of how definitions for words worked, as well as just several missed pieces.
+		- Didn't consider that definitions should be a vertical table (or at least support a csv esc list.)
+		- Didn't consider that one word would have two "pages" (i.e sad = the feeling and the arabic.)
+		- Didn't consider how many words that are strong emotions also mean different things (i.e depressed's most common discription is to press down.)
+	- However, I have been putting off unit tests too long. Need to add those to the project, and hopefully take some time to learn how to use actual integration testing libraries.
+		- Prehaps an advantage of code first ef is that I can use the code generated migrations to make a more "real" in memory db?
+		- Even if I can, may still want to experiment with creating docker dbs to hit.
+- Not super happy with the dictionary client api as of right now. Need to see if I can change the dtos to be captials of themselves now that I found my issues with doing so before might have actually been the multiple dictionary pages being returned, and not a caps issue.
+- Also, maybe move the api call out of the mapping call? They are connected, but testing seems like it might be difficult. We'll see during my big push for testing.
+- Also small learning oppurtinity for git bash - I've been spoiled using guis, but using the bash was refreshing and had quite a bit more flexability then guis like source tree.

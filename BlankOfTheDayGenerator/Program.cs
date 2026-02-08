@@ -1,6 +1,7 @@
 using BlankOfTheDayGenerator.Components;
 using Data.Models;
 using Data.Services;
+using DictionaryApiClient;
 using Domain.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,8 +12,11 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddDbContext<BlankOfTheDayContext>();
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<IEmotionRepoistory, EmotionRepository>();
 builder.Services.AddScoped<IEmotionService, EmotionService>();
+builder.Services.AddTransient<IDefiner, FreeDictionaryApiClient>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
