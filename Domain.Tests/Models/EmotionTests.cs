@@ -9,33 +9,73 @@ namespace Domain.Tests.Models;
 [TestFixture]
 public abstract class GivenAnEmotion
 {
-    private readonly Fixture _fixture;
+    private IFixture _fixture;
     private IEmotionState _state;
     private Emotion _emotion;
 
     [OneTimeSetUp]
-    private void CreateFixture()
+    public void CreateFixture()
     {
-        var fixture = new Fixture().Customize(new AutoNSubstituteCustomization() { ConfigureMembers = true });
+        _fixture = new Fixture().Customize(new AutoNSubstituteCustomization() { ConfigureMembers = true });
     }
 
     [SetUp]
-    private void CreateEmotion()
+    public void CreateEmotion()
     {
         _state = _fixture.Create<IEmotionState>();
         _emotion = new Emotion(_state);
     }
 
     [TestFixture]
-    private class AndCallingNewDescriptionFound : GivenAnEmotion
+    private class WhenCallingNewDescriptionFound : GivenAnEmotion
+    {
+        private DefinedWord _newDefinition;
+
+        [SetUp]
+        public void CreateDefinedWord()
+        {
+            _newDefinition = _fixture.Create<DefinedWord>();
+        }
+
+        [TestFixture]
+        private class AndDefinitionHasMeanings : WhenCallingNewDescriptionFound
+        {
+            [Test]
+            public void ThenStatesDescriptionFoundMethodCalled()
+            {
+                _emotion.NewDescriptionFound(_newDefinition);
+                _state.Received(1).DescriptionFound(_newDefinition.Meanings.First().Definition, 0);
+            }
+        }
+
+        [TestFixture]
+        private class AndDefinitionHasNoMeanings : WhenCallingNewDescriptionFound
+        {
+            [SetUp]
+            public void EmptyDefinedWordsMeanings()
+            {
+                _newDefinition = _newDefinition with { Meanings = [] };
+            }
+
+            [Test]
+            public void ThenStatesDescriptionFoundMethodNotCalled()
+            {
+                _emotion.NewDescriptionFound(_newDefinition);
+                _state.DidNotReceiveWithAnyArgs().DescriptionFound(Arg.Any<string>(), Arg.Any<float>());
+            }
+        }
+    }
+
+    [TestFixture]
+    private class WhenCallingEmotionFetched : GivenAnEmotion
     {
         [Test]
-        public void ThenStatesDescriptionFoundMethodCalled()
+        public void ThenStateReturnedIsCalled()
         {
-            var definedWord = _fixture.Create<DefinedWord>();
-            _emotion.NewDescriptionFound(_fixture.Create<DefinedWord>());
-            _state.Received().DescriptionFound(definedWord.Meanings.First().Definition, 0)
-                ;
+            var emotionBeforeCallTime = DateTime.UtcNow;
+            _emotion.EmotionFetched();
+            var emotionAfterCallTime = DateTime.UtcNow;
+            _state.Received(1).StateReturned(Arg.Is<DateTime>(dt => emotionBeforeCallTime <= dt && emotionAfterCallTime >= dt));
         }
     }
 }
