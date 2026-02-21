@@ -5,11 +5,6 @@ using Domain.Services;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Tests.Services
 {
@@ -37,7 +32,7 @@ namespace Domain.Tests.Services
         }
 
         [TestFixture]
-        private class WhenGetRandomEmotionIsCalled : GivenAnEmotionService
+        private abstract class WhenGetRandomEmotionIsCalled : GivenAnEmotionService
         {
             private IEmotionState _fakeReturnedEmotionsState;
             private Emotion _returnedEmotion;
@@ -56,7 +51,31 @@ namespace Domain.Tests.Services
 
                 _fakeEmotionRepo.GetAll().ReturnsForAnyArgs(_emotions);
                 _fakeDefiner.DefineWord(Arg.Is<string>(str => str == _returnedEmotion.Name))
-                    .Returns(x => _emotionDefinition);
+                    .Returns(x => Task.FromResult(_emotionDefinition));
+            }
+
+            [TestFixture]
+            private class AndRepoReturnsEmotionWithDescription : WhenGetRandomEmotionIsCalled
+            {
+                private string _expectedDescription { get; set; }
+
+                [SetUp]
+                public void ForceDescriptionReturn()
+                {
+                    _expectedDescription = _fixture.Create<string>();
+                    _fakeReturnedEmotionsState.Description.Returns(_expectedDescription);
+                }
+
+                [Test]
+                public async Task ThenEmotionWithExpectedDescriptionIsReturned()
+                {
+                    var emotion = await _service.GetRandomEmotion();
+                    using (Assert.EnterMultipleScope())
+                    {
+                        Assert.That(emotion, Is.EqualTo(_returnedEmotion));
+                        Assert.That(emotion.Description, Is.EqualTo(_expectedDescription));
+                    }
+                }
             }
 
             [TestFixture]
@@ -67,6 +86,13 @@ namespace Domain.Tests.Services
                 {
                     _ = await _service.GetRandomEmotion();
                     _fakeReturnedEmotionsState.Received(1).DescriptionFound(_emotionDefinition.Meanings.First().Definition, 0);
+                }
+
+                [Test]
+                public async Task ThenCallsSaveChanges()
+                {
+                    _ = await _service.GetRandomEmotion();
+                    _fakeEmotionRepo.Received(1).SaveChanges(); //TODO: Does this show an error on a computer with the analyzers
                 }
             }
 
