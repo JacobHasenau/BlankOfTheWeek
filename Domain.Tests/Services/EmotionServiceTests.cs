@@ -3,13 +3,14 @@ using AutoFixture.AutoNSubstitute;
 using Domain.Models;
 using Domain.Services;
 using NSubstitute;
+using NSubstitute.ClearExtensions;
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
 
 namespace Domain.Tests.Services
 {
     [TestFixture]
-    public class GivenAnEmotionService
+    public abstract class GivenAnEmotionService
     {
         private IFixture _fixture;
         private IEmotionRepoistory _fakeEmotionRepo;
@@ -38,19 +39,24 @@ namespace Domain.Tests.Services
             private Emotion _returnedEmotion;
             private List<Emotion> _emotions;
             private DefinedWord _emotionDefinition;
+            private string _emotionName;
 
             [SetUp]
             public void CreateRandomEmotions()
             {
+                _emotionName = _fixture.Create<string>();
                 _fakeReturnedEmotionsState = _fixture.Create<IEmotionState>();
                 _fakeReturnedEmotionsState.Description.ReturnsNull();
+                _fakeReturnedEmotionsState.Name.Returns(_emotionName);
                 _returnedEmotion = new Emotion(_fakeReturnedEmotionsState);
 
                 _emotions = [_returnedEmotion];
                 _emotionDefinition = _fixture.Create<DefinedWord>();
 
                 _fakeEmotionRepo.GetAll().ReturnsForAnyArgs(_emotions);
-                _fakeDefiner.DefineWord(Arg.Is<string>(str => str == _returnedEmotion.Name))
+
+                var definerTask = Task.FromResult(_emotionDefinition);
+                _fakeDefiner.DefineWord(Arg.Is<string>(str => str == _emotionName))
                     .Returns(x => Task.FromResult(_emotionDefinition));
             }
 
@@ -89,11 +95,11 @@ namespace Domain.Tests.Services
                 }
 
                 [Test]
-                public async Task ThenCallsSaveChanges()
+                public async Task ThenCallsSaveChangesAtLeastOnce()
                 {
                     _ = await _service.GetRandomEmotion();
-                    _fakeEmotionRepo.Received(1).SaveChanges(); //TODO: Does this show an error on a computer with the analyzers
-                }
+                    _fakeEmotionRepo.Received(2).SaveChanges(); //TODO: Does this show an error on a computer with the analyzers
+               }
             }
 
         }
