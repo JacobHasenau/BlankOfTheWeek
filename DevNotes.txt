@@ -1,10 +1,10 @@
 # Dev Notes
 ### Why?
 Often when I attempt to keep track of a project, I lose context for my changes and where I was at last. Also, as this project is a way for me to learn new technologies and test certain ideas out, my hope is that this document can work as notes for my frustrations, excitements, and general progress. 
-Finally, if I *do* end up creating something fun and interesting, I hope these notes can guide the next dev who wants to make changes to understand why I made what choices I did.
+Finally, if I *do* end up creating something fun and interesting, I hope these notes can guide the next dev who wants to make changes to understand why I made what choices I made.
 
 ## Project Goal
-I have very limited front end experience, and would really like to gain more. Ideally using blazor will allow me to both sharpen my c# skills while also getting to train front end ones. Worst case, it will prove to me why javascript is what my company/friends use for front end development.
+I have very limited front end experience and would really like to gain more. Ideally using blazor will allow me to both sharpen my c# skills while also getting to train front end ones. Worst case, it will prove to me why javascript is what my company/friends use for front end development.
 
 ## Trello
 https://trello.com/b/698814e5aeb3272db206ce0b
@@ -20,24 +20,24 @@ https://trello.com/b/698814e5aeb3272db206ce0b
 		- https://www.telerik.com/faqs/blazor/razor-vs-blazor--what-is-the-key-difference thought me the differences
 		- blazor is a framework
 		- razor is a markup language only
-- Spent a long time making a generic repository for adding/removing "entries"
+- Spent a long time making a generic repository for adding/removing "entries."
 	- This started to feel like an anti-pattern, and lo and behold, the internet [agrees](https://www.reddit.com/r/csharp/comments/1l5of90/generic_vs_specific_repositories/) 
-	- Still, ideally I want to expand this project to let users "create" their own _oftheday generators. I may need to revisit eventually how to do this.
+	- Still, ideally, I want to expand this project to let users "create" their own _oftheday generators. I may need to revisit eventually how to do this.
 - Spent a medium amount of time figuring out how code-first in ef worked
-	- Also, sqlite is *very* cute, and can run so easily! Unless I had already downloaded a server its pretty cool that a database can run out of the box.
-		- Less cute is its lack of concurrent writes, lack of safty for across the wire interactions, and no security.
+	- Also, sqlite is *very* cute, and can run so easily! Unless I have already downloaded a server it’s pretty cool that a database can run out of the box.
+		- Less cute is its lack of concurrent writes, lack of safety for across the wire interactions, and no security.
 		- Still, for a local project like this, it works fine!
 - Spent a small amount of time fixing typos
 	- Discriptions not a real word, turns out
-	- Of course I found that out after already making migration scripts, so I had to rip everything out...
+	- Of course, I found out after already making migration scripts, so I had to rip everything out...
 - Where I left off
 	- Next, I want to hook up the add emotion button to also call out to the https://dictionaryapi.dev/ (or possibly have the Emotion itself do so when no description is provided) so it can actually fill in the description.
-	- Also, want to figure out how to create custom nav-menu options, and work on creating a custom emotion option.
-	- I desire to make my random generator exhaust all emotions in the database before restarting. I need to brainstorm best ways to do this
+	- Also, I want to figure out how to create custom nav-menu options, and work on creating a custom emotion option.
+	- I desire to make my random generator exhaust all emotions in the database before restarting. I need to brainstorm best ways to do this.
 		- I have a "LastFetchedDate" on the emotions table, but perhaps that's too specific. Also, missing a user specific concept - every generation would impact all users.
 		- Maybe create a "user" table (want to avoid using a login for the website, but maybe ip based? still might be too intrusive...) that maintains what emotions it has fetched. When all emotions have been fetched by the user, we clear out that table and restart?
 	- Also want to figure out how to best calculate "stragness" (also, rename to strangeness.) And utilize that for a weighted random generation tech.
-		- Basically, attempt to provide the user with a desired strangeness score, weighting less used words higher for higher scores, and vise versa.
+		- Basically, attempt to provide the user with a desired strangeness score, weighting less used words higher for higher scores, and vice versa.
 	- Finally, actually create a ticketing system to capture ideas and do work tasks. A todo list is good, but tracking time spent/how long I think tasks will take will be good practice for figuring out how to estimate front end work.
 		- Use jira?
 		- Trello?
@@ -45,11 +45,15 @@ https://trello.com/b/698814e5aeb3272db206ce0b
 - Today proved the use of rapid prototyping and getting to the mrp as fast as possible.
 	- Hitting the freeapi and trying to consume the definition proved several holes in my understanding of how definitions for words worked, as well as just several missed pieces.
 		- Didn't consider that definitions should be a vertical table (or at least support a csv esc list.)
-		- Didn't consider that one word would have two "pages" (i.e sad = the feeling and the arabic.)
-		- Didn't consider how many words that are strong emotions also mean different things (i.e depressed's most common discription is to press down.)
-	- However, I have been putting off unit tests too long. Need to add those to the project, and hopefully take some time to learn how to use actual integration testing libraries.
-		- Prehaps an advantage of code first ef is that I can use the code generated migrations to make a more "real" in memory db?
-		- Even if I can, may still want to experiment with creating docker dbs to hit.
-- Not super happy with the dictionary client api as of right now. Need to see if I can change the dtos to be captials of themselves now that I found my issues with doing so before might have actually been the multiple dictionary pages being returned, and not a caps issue.
+		- Didn't consider that one word would have two "pages" (i.e. sad = the feeling and the Arabic.)
+		- Didn't consider how many words that are strong emotions also mean different things (i.e. depressed's most common description is to press down.)
+	- However, I have been putting off unit tests too long. Need to add those to the project and hopefully take some time to learn how to use actual integration testing libraries.
+		- Perhaps an advantage of code first ef is that I can use the code generated migrations to make a more "real" in memory db?
+		- Even if I can, I may still want to experiment with creating docker dbs to hit.
+- Not super happy with the dictionary client api as of right now. Need to see if I can change the dtos to be capital of themselves now that I found my issues with doing so before might have actually been the multiple dictionary pages being returned, and not a caps issue.
 - Also, maybe move the api call out of the mapping call? They are connected, but testing seems like it might be difficult. We'll see during my big push for testing.
-- Also small learning oppurtinity for git bash - I've been spoiled using guis, but using the bash was refreshing and had quite a bit more flexability then guis like source tree.
+- Also, small learning opportunity for git bash - I've been spoiled using guis, but using the bash was refreshing and had quite a bit more flexibility than guis like source tree.
+
+### 2026-02-25
+- It’s been a little bit since I've updated the dev notes. Covid did a number against my ability to be productive, and honestly creating unit tests is never the way to make me feel super encouraged. Additionally, my last big push made me question some of the design of the project, making the current flow the program has questionable to me. That being said, I am working on ensuring minimal working product, and the current logic *is* basically the MWP. Attempting to ensure I can focus on that portion of the project is important and lets me practice not succumbing to scope creep in my personal projects.
+- Additionally, I have been struggling with when to try and use AI in this project. The addition of the AddEmotion tests was my first attempt, and admittedly it did give a very good base line of tests. However, I did give up advising the AI on how to make the tests and ended up heavily refactoring them. Also, the tests it originally made did not all pass, and I question its need to test EVERYTHING it did. I will have to review if all the tests it did are as needed as it thinks.
