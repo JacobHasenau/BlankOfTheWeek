@@ -3,7 +3,6 @@ using AutoFixture.AutoNSubstitute;
 using Domain.Models;
 using Domain.Services;
 using NSubstitute;
-using NSubstitute.ClearExtensions;
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
 
@@ -32,6 +31,13 @@ namespace Domain.Tests.Services
             _service = _fixture.Create<EmotionService>();
         }
 
+        [TearDown]
+        public void ClearCalls()
+        {
+            _fakeEmotionRepo.ClearReceivedCalls();
+            _fakeDefiner.ClearReceivedCalls();
+        }
+
         [TestFixture]
         private abstract class WhenGetRandomEmotionIsCalled : GivenAnEmotionService
         {
@@ -53,7 +59,7 @@ namespace Domain.Tests.Services
                 _emotions = [_returnedEmotion];
                 _emotionDefinition = _fixture.Create<DefinedWord>();
 
-                _fakeEmotionRepo.GetAll().ReturnsForAnyArgs(_emotions);
+                _fakeEmotionRepo.GetAll().ReturnsForAnyArgs(x => _emotions);
 
                 var definerTask = Task.FromResult(_emotionDefinition);
                 _fakeDefiner.DefineWord(Arg.Is<string>(str => str == _emotionName))
@@ -98,10 +104,26 @@ namespace Domain.Tests.Services
                 public async Task ThenCallsSaveChangesAtLeastOnce()
                 {
                     _ = await _service.GetRandomEmotion();
-                    _fakeEmotionRepo.Received(2).SaveChanges(); //TODO: Does this show an error on a computer with the analyzers
+                    _fakeEmotionRepo.Received(1).SaveChanges(); //TODO: Does this show an error on a computer with the analyzers
                }
             }
 
+            [TestFixture]
+            private class AndRepoReturnsNoEmotions : WhenGetRandomEmotionIsCalled 
+            {
+                [SetUp]
+                public void ClearEmotions()
+                {
+                    _emotions = [];
+                }
+
+                [Test]
+                public async Task ThenNullReturned()
+                {
+                    var result = await _service.GetRandomEmotion();
+                    Assert.That(result, Is.Null);
+                }
+            }
         }
     }
 }

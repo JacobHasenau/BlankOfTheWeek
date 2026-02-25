@@ -37,16 +37,24 @@ public class EmotionService(IEmotionRepoistory repo, IDefiner definer) : IEmotio
         var emotions = await _repository.GetAll();
         var emotion = emotions.OrderBy(e => Guid.NewGuid()).FirstOrDefault();
 
-        if (emotion is not null && emotion?.Description is null)
+        if (emotion is null)
+        {
+            return null;
+        }
+
+        if (emotion.Description is null)
         {
             var definition = await _definer.DefineWord(emotion!.Name);
+            
             if (definition is not null)
             {
                 emotion.NewDescriptionFound(definition);
-                await _repository.SaveChanges();
             }
         }
 
+        emotion.EmotionFetched();
+        await _repository.SaveChanges();
+        
         return emotion;
     }
 }
